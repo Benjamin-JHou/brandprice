@@ -1,0 +1,145 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Inter Tight", system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv11";
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  background: #F5F2EC;
+  color: #0A0A0A;
+  overscroll-behavior-y: none;
+}
+
+html.dark,
+html.dark body,
+html.dark #root {
+  background: #0A0A0A;
+  color: #F5F2EC;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+a {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+/* Selection */
+::selection {
+  background: #0A0A0A;
+  color: #F5F2EC;
+}
+
+.dark ::selection {
+  background: #F5F2EC;
+  color: #0A0A0A;
+}
+
+/* Tabular numerals for prices */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Ticker tape */
+.marquee-track {
+  animation: marquee 40s linear infinite;
+  will-change: transform;
+}
+
+.marquee-pause:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Section divider */
+.section-rule {
+  height: 1px;
+  background: #0A0A0A;
+  width: 100%;
+}
+
+.dark .section-rule {
+  background: #F5F2EC;
+}
+
+/* Dotted leader for prices list */
+.dotted-leader {
+  background-image: radial-gradient(circle, currentColor 1px, transparent 1px);
+  background-size: 6px 6px;
+  background-repeat: repeat-x;
+  background-position: left center;
+}
+
+/* Hide scrollbar but allow scroll */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Safe area for iOS */
+.pb-safe {
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: calc(0.75rem + env(safe-area-inset-top));
+}
+
+/* Hover lift for cards */
+.card-lift {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.card-lift:active {
+  transform: scale(0.98);
+}
+
+/* Image placeholder */
+.image-grid {
+  background-color: #EDE8DD;
+  background-image:
+    linear-gradient(45deg, #E5DCC9 25%, transparent 25%),
+    linear-gradient(-45deg, #E5DCC9 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #E5DCC9 75%),
+    linear-gradient(-45deg, transparent 75%, #E5DCC9 75%);
+  background-size: 20px 20px;
+  background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+}
+
+.dark .image-grid {
+  background-color: #1A1A1A;
+  background-image:
+    linear-gradient(45deg, #262626 25%, transparent 25%),
+    linear-gradient(-45deg, #262626 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #262626 75%),
+    linear-gradient(-45deg, transparent 75%, #262626 75%);
+}

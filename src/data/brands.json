@@ -1,0 +1,103 @@
+[
+  {
+    "slug": "ader-error",
+    "name": "ADER Error",
+    "nameLocal": "아더에러",
+    "country": "South Korea",
+    "logo": "A",
+    "tagline": "Gender-fluid Seoul streetwear",
+    "popular": true
+  },
+  {
+    "slug": "matin-kim",
+    "name": "Matin Kim",
+    "nameLocal": "마틴킴",
+    "country": "South Korea",
+    "logo": "M",
+    "tagline": "Y2K-leaning Seoul contemporary",
+    "popular": true
+  },
+  {
+    "slug": "andersson-bell",
+    "name": "Andersson Bell",
+    "nameLocal": "안데르손벨",
+    "country": "South Korea",
+    "logo": "A",
+    "tagline": "Scandinavian-Korean crossover",
+    "popular": true
+  },
+  {
+    "slug": "we11done",
+    "name": "We11done",
+    "nameLocal": "웰돈",
+    "country": "South Korea",
+    "logo": "W",
+    "tagline": "Ironic maximalist streetwear",
+    "popular": true
+  },
+  {
+    "slug": "atocorp",
+    "name": "Ato",
+    "nameLocal": "아토",
+    "country": "South Korea",
+    "logo": "A",
+    "tagline": "Quietly radical tailoring"
+  },
+  {
+    "slug": "hyein-seo",
+    "name": "Hyein Seo",
+    "nameLocal": "혜인서",
+    "country": "South Korea",
+    "logo": "H",
+    "tagline": "Y2H dystopian youthwear"
+  },
+  {
+    "slug": "post-archive-faction",
+    "name": "Post Archive Faction",
+    "nameLocal": "PAF",
+    "country": "South Korea",
+    "logo": "P",
+    "tagline": "Technical-deconstructive sportswear",
+    "popular": true
+  },
+  {
+    "slug": "thisisneverthat",
+    "name": "thisisneverthat",
+    "nameLocal": "디스이즈네버댓",
+    "country": "South Korea",
+    "logo": "T",
+    "tagline": "New Korean streetwear standard"
+  },
+  {
+    "slug": "dunst",
+    "name": "Dunst",
+    "nameLocal": "던스트",
+    "country": "South Korea",
+    "logo": "D",
+    "tagline": "Lightweight outerwear specialists"
+  },
+  {
+    "slug": "mardi-mercredi",
+    "name": "Mardi Mercredi",
+    "nameLocal": "마르디메크르디",
+    "country": "South Korea",
+    "logo": "M",
+    "tagline": "Everyday Parisian-Seoul basics"
+  },
+  {
+    "slug": "recto",
+    "name": "RECTO",
+    "nameLocal": "렉토",
+    "country": "South Korea",
+    "logo": "R",
+    "tagline": "Heritage Korean shirting"
+  },
+  {
+    "slug": "beyond-closet",
+    "name": "Beyond Closet",
+    "nameLocal": "비욘드클로젯",
+    "country": "South Korea",
+    "logo": "B",
+    "tagline": "Mod-classic Seoul casual"
+  }
+]
