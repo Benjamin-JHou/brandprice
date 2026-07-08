@@ -67,8 +67,8 @@ export default function SettingsPage() {
                 onClick={() => setLang(l)}
                 className={`py-3 border-2 font-mono text-2xs uppercase tracking-caps transition-colors ${
                   lang === l
-                    ? 'border-ink bg-ink text-paper'
-                    : 'border-ink hover:bg-ink hover:text-paper text-ink'
+                    ? 'border-ink bg-ink text-paper dark:border-paper dark:bg-paper dark:text-ink'
+                    : 'border-ink text-ink hover:bg-ink hover:text-paper dark:border-paper dark:text-paper dark:hover:bg-paper dark:hover:text-ink'
                 }`}
               >
                 {l === 'zh' ? '中文' : 'English'}
@@ -91,8 +91,8 @@ export default function SettingsPage() {
                 onClick={() => setTheme(th)}
                 className={`py-3 border-2 font-mono text-2xs uppercase tracking-caps transition-colors ${
                   theme === th
-                    ? 'border-ink bg-ink text-paper'
-                    : 'border-ink hover:bg-ink hover:text-paper text-ink'
+                    ? 'border-ink bg-ink text-paper dark:border-paper dark:bg-paper dark:text-ink'
+                    : 'border-ink text-ink hover:bg-ink hover:text-paper dark:border-paper dark:text-paper dark:hover:bg-paper dark:hover:text-ink'
                 }`}
               >
                 {t(`theme.${th}`)}
@@ -124,7 +124,7 @@ export default function SettingsPage() {
                 className={`px-3 py-1.5 border-2 text-2xs font-mono uppercase tracking-caps transition-colors ${
                   confirmClearHistory
                     ? 'border-vermilion bg-vermilion text-white'
-                    : 'border-ink hover:bg-ink hover:text-paper'
+                    : 'border-ink text-ink hover:bg-ink hover:text-paper dark:border-paper dark:text-paper dark:hover:bg-paper dark:hover:text-ink'
                 }`}
               >
                 {confirmClearHistory ? t('common.remove') : t('history.clearAll')}
@@ -143,7 +143,7 @@ export default function SettingsPage() {
               </div>
               <button
                 onClick={handleExport}
-                className="px-3 py-1.5 border-2 border-ink text-2xs font-mono uppercase tracking-caps hover:bg-ink hover:text-paper transition-colors"
+                className="px-3 py-1.5 border-2 border-ink text-ink text-2xs font-mono uppercase tracking-caps hover:bg-ink hover:text-paper dark:border-paper dark:text-paper dark:hover:bg-paper dark:hover:text-ink transition-colors"
               >
                 {t('favorites.archive')}
               </button>
@@ -164,7 +164,7 @@ export default function SettingsPage() {
                 className={`px-3 py-1.5 border-2 text-2xs font-mono uppercase tracking-caps transition-colors ${
                   confirmClearCache
                     ? 'border-vermilion bg-vermilion text-white'
-                    : 'border-ink hover:bg-ink hover:text-paper'
+                    : 'border-ink text-ink hover:bg-ink hover:text-paper dark:border-paper dark:text-paper dark:hover:bg-paper dark:hover:text-ink'
                 }`}
               >
                 {confirmClearCache ? t('common.remove') : t('history.clearAll')}
