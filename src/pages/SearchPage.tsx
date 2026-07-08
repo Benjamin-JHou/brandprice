@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
-import { ArrowLeft, RefreshCw, SearchX } from 'lucide-react';
+import { ArrowLeft, RefreshCw, SearchX, ArrowUpRight } from 'lucide-react';
 import { Page } from '../components/Page';
 import { SectionHeader } from '../components/SectionHeader';
 import { SearchBar } from '../components/SearchBar';
-import { ProductCard } from '../components/ProductCard';
 import { TopBar } from '../components/TopBar';
 import { BottomNav } from '../components/BottomNav';
-import { LiveDot } from '../components/LiveDot';
 import { useSearch } from '../hooks/useSearch';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { useI18n } from '../i18n/useI18n';
@@ -56,8 +54,6 @@ export default function SearchPage() {
             ) : (
               <span className="inline-flex items-center gap-2">
                 <span className="font-mono tnum">{t('search.resultCount.other', { n: data.length, ms: elapsedMs })}</span>
-                <span aria-hidden>·</span>
-                <LiveDot label />
               </span>
             )
           }
@@ -91,7 +87,7 @@ export default function SearchPage() {
             <p className="mt-4 font-serif text-xl">{t('search.empty.title')}</p>
             <p className="mt-1 text-2xs font-mono uppercase tracking-caps text-ink-500 max-w-xs mx-auto">
               {t('search.empty.hint')}
-              <span className="font-mono not-italic text-ink-700 dark:text-ink-300"> JA12GR043</span>
+              <span className="font-mono not-italic text-ink-700 dark:text-ink-300"> ADER, Matin, 안데르손벨</span>
             </p>
             <Link
               to="/"
@@ -102,24 +98,27 @@ export default function SearchPage() {
             </Link>
           </div>
         ) : (
-          <div className="divide-y-0">
-            {data.map((p, i) => (
-              <ProductCard key={p.sku} product={p} rank={i + 1} />
-            ))}
-            {loading && data.length === 0 && (
-              <div className="space-y-6">
-                {[0, 1, 2, 3].map((i) => (
-                  <div key={i} className="grid grid-cols-[88px_1fr] gap-4 py-5 border-t-2 border-ink">
-                    <div className="aspect-square image-grid animate-pulse" />
-                    <div className="space-y-2 pt-1">
-                      <div className="h-2 w-1/3 bg-ink-300 dark:bg-ink-700 animate-pulse" />
-                      <div className="h-4 w-2/3 bg-ink-300 dark:bg-ink-700 animate-pulse" />
-                      <div className="h-6 w-1/2 bg-ink-300 dark:bg-ink-700 animate-pulse" />
-                    </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+            {data.map((b) => (
+              <button
+                key={b.slug}
+                onClick={() => navigate(`/brand/${b.slug}`)}
+                className="flex items-center justify-between p-4 border-2 border-ink hover:border-vermilion dark:border-ink hover:bg-ink-100 dark:hover:bg-ink-900 transition-colors text-left"
+              >
+                <div>
+                  <div className="font-serif text-lg font-bold flex items-center gap-2">
+                    <span>{b.name}</span>
+                    {b.nameLocal && b.nameLocal !== b.name && (
+                      <span className="text-sm font-sans font-normal text-ink-500">({b.nameLocal})</span>
+                    )}
                   </div>
-                ))}
-              </div>
-            )}
+                  <div className="mt-1 text-2xs font-mono uppercase tracking-caps text-ink-400">
+                    {b.tagline}
+                  </div>
+                </div>
+                <ArrowUpRight size={18} strokeWidth={1.5} className="text-ink-400 shrink-0" />
+              </button>
+            ))}
           </div>
         )}
       </Page>

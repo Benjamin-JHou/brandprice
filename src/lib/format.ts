@@ -1,31 +1,4 @@
-// 货币与日期格式化
-import { CURRENCY_SYMBOL, type Currency } from './types';
-import { convert } from './fx';
-
-export function formatPrice(amount: number, currency: Currency): string {
-  const map: Record<Currency, Intl.NumberFormatOptions> = {
-    EUR: { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 },
-    USD: { style: 'currency', currency: 'USD', maximumFractionDigits: 0 },
-    GBP: { style: 'currency', currency: 'GBP', maximumFractionDigits: 0 },
-    JPY: { style: 'currency', currency: 'JPY', maximumFractionDigits: 0 },
-    CNY: { style: 'currency', currency: 'CNY', maximumFractionDigits: 0 },
-    KRW: { style: 'currency', currency: 'KRW', maximumFractionDigits: 0 },
-  };
-  try {
-    return new Intl.NumberFormat('en-US', map[currency]).format(amount);
-  } catch {
-    return `${CURRENCY_SYMBOL[currency]}${amount.toFixed(0)}`;
-  }
-}
-
-export function formatConvertedPrice(
-  amount: number,
-  from: Currency,
-  to: Currency,
-): string {
-  if (from === to) return formatPrice(amount, from);
-  return formatPrice(convert(amount, from, to), to);
-}
+// 日期和相对时间格式化工具
 
 export function formatRelativeTime(iso: string, now = Date.now()): string {
   const t = new Date(iso).getTime();

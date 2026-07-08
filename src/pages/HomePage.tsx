@@ -4,7 +4,6 @@ import { ArrowUpRight, Search as SearchIcon } from 'lucide-react';
 import { Page } from '../components/Page';
 import { SectionHeader } from '../components/SectionHeader';
 import { SearchBar } from '../components/SearchBar';
-import { BrandChip } from '../components/BrandChip';
 import { TopBar } from '../components/TopBar';
 import { BottomNav } from '../components/BottomNav';
 import { LiveDot } from '../components/LiveDot';
@@ -14,27 +13,26 @@ import type { Brand } from '../lib/types';
 import { formatRelativeTime } from '../lib/format';
 import { useI18n } from '../i18n/useI18n';
 
-// K-fashion 热门词：中文版用品牌 + 类别；英文版用品牌 + 英文类别
 const HOT_EN = [
-  'ADER hoodie',
-  'Matin Kim shirt',
-  'Andersson Bell coat',
-  'PAF vest',
+  'ADER Error',
+  'Matin Kim',
+  'Andersson Bell',
+  'Low Classic',
   'Mardi Mercredi',
-  'We11done denim',
-  'Ato blazer',
-  'RECTO oxford',
+  'Dunst',
+  'Thug Club',
+  'Juun.J',
 ];
 
 const HOT_ZH = [
-  'ADER 连帽衫',
-  '마틴킴 衬衫',
-  '안데르손벨 大衣',
-  'PAF 马甲',
-  'Mardi Mercredi',
-  'We11done 牛仔',
-  'Ato 西装',
-  'RECTO 牛津纺',
+  'ADER Error',
+  'Matin Kim',
+  '安德森贝尔',
+  'Low Classic',
+  '马尔迪',
+  'Dunst',
+  'Thug Club',
+  'Juun.J',
 ];
 
 export default function HomePage() {
@@ -48,12 +46,8 @@ export default function HomePage() {
   const hot = lang === 'zh' ? HOT_ZH : HOT_EN;
 
   useEffect(() => {
-    api.popularBrands().then(setBrands).catch(() => undefined);
+    api.brands().then(setBrands).catch(() => undefined);
   }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-  }, [lang]);
 
   const submit = (text: string) => {
     const t0 = text.trim();
@@ -66,12 +60,12 @@ export default function HomePage() {
     <>
       <TopBar />
       <Page>
-        {/* 简洁标题区：去掉长段介绍 */}
+        {/* Title area */}
         <div className="pt-8 sm:pt-12 mb-8">
           <div className="flex items-center justify-between gap-3 mb-3">
             <LiveDot label size="md" text="auto" />
             <span className="text-2xs font-mono uppercase tracking-caps text-ink-400">
-              {lang === 'zh' ? '实时 · 每 30 秒更新' : 'Live · updates every 30s'}
+              {lang === 'zh' ? '品牌百科 · 官网直达' : 'Brand Wiki · Official Store Link'}
             </span>
           </div>
           <h1 className="font-serif text-[clamp(2.75rem,10vw,4.5rem)] font-bold tracking-tighter leading-[0.92]">
@@ -82,7 +76,7 @@ export default function HomePage() {
           </h1>
         </div>
 
-        {/* 搜索区 */}
+        {/* Search area */}
         <div className="mb-12">
           <SearchBar value={q} onChange={setQ} onSubmit={submit} autoFocus />
           <div className="mt-3 flex items-center justify-between gap-3 text-2xs font-mono uppercase tracking-caps text-ink-500">
@@ -101,23 +95,38 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 热门品牌 */}
+        {/* All Brands Section */}
         <section className="mb-10">
           <SectionHeader
             index="01"
             title={t('home.popularBrands')}
             meta={t('home.popularMeta', { n: brands.length })}
           />
-          <div className="-mx-5 sm:-mx-6 overflow-x-auto no-scrollbar">
-            <div className="px-5 sm:px-6 flex gap-2 pb-2">
-              {brands.map((b) => (
-                <BrandChip key={b.slug} brand={b} />
-              ))}
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {brands.map((b) => (
+              <button
+                key={b.slug}
+                onClick={() => navigate(`/brand/${b.slug}`)}
+                className="flex items-center justify-between p-4 border-2 border-ink hover:border-vermilion dark:border-ink hover:bg-ink-100 dark:hover:bg-ink-900 transition-colors text-left"
+              >
+                <div>
+                  <div className="font-serif text-lg font-bold flex items-center gap-2">
+                    <span>{b.name}</span>
+                    {b.nameLocal && b.nameLocal !== b.name && (
+                      <span className="text-sm font-sans font-normal text-ink-500">({b.nameLocal})</span>
+                    )}
+                  </div>
+                  <div className="mt-1 text-2xs font-mono uppercase tracking-caps text-ink-400">
+                    {b.tagline}
+                  </div>
+                </div>
+                <ArrowUpRight size={18} strokeWidth={1.5} className="text-ink-400 shrink-0" />
+              </button>
+            ))}
           </div>
         </section>
 
-        {/* 最近查询 */}
+        {/* Recent Lookups */}
         <section className="mb-10">
           <SectionHeader
             index="02"
@@ -163,10 +172,10 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* 底部留白的小行签名：取代大段编者按 */}
+        {/* Footer info */}
         <div className="mt-12 pt-6 border-t border-ink-300 dark:border-ink-700">
           <p className="text-2xs font-mono uppercase tracking-caps text-ink-400 text-center">
-            {lang === 'zh' ? '官网价格 · 直达源头' : 'Official site · Direct source'}
+            {lang === 'zh' ? '源头官网 · 直达连结' : 'Official site · Direct source'}
           </p>
         </div>
       </Page>

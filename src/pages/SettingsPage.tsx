@@ -1,4 +1,4 @@
-import { ChevronRight, Trash2, Download, Sun, Moon, Monitor, Check, type LucideIcon } from 'lucide-react';
+import { useState } from 'react';
 import { Page } from '../components/Page';
 import { SectionHeader } from '../components/SectionHeader';
 import { TopBar } from '../components/TopBar';
@@ -6,39 +6,45 @@ import { BottomNav } from '../components/BottomNav';
 import { useSettingsStore } from '../store/useSettingsStore';
 import { useHistoryStore } from '../store/useHistoryStore';
 import { useFavoritesStore } from '../store/useFavoritesStore';
-import { CURRENCIES, CURRENCY_LABEL, type Currency } from '../lib/types';
-import { LanguageSwitcher } from '../components/LanguageSwitcher';
 import { useI18n } from '../i18n/useI18n';
-import type { TranslationKey } from '../i18n/translations';
-
-const THEMES: { value: 'system' | 'light' | 'dark'; key: TranslationKey; icon: LucideIcon }[] = [
-  { value: 'system', key: 'theme.auto', icon: Monitor },
-  { value: 'light', key: 'theme.light', icon: Sun },
-  { value: 'dark', key: 'theme.dark', icon: Moon },
-];
+import { ArrowUpRight } from 'lucide-react';
 
 export default function SettingsPage() {
-  const currency = useSettingsStore((s) => s.currency);
-  const setCurrency = useSettingsStore((s) => s.setCurrency);
+  const { t, lang, setLang } = useI18n();
   const theme = useSettingsStore((s) => s.theme);
   const setTheme = useSettingsStore((s) => s.setTheme);
-  const clearHistory = useHistoryStore((s) => s.clear);
-  const favorites = useFavoritesStore((s) => s.prices);
-  const subscriptions = useFavoritesStore((s) => s.subscriptions);
-  const { t } = useI18n();
 
-  const exportData = () => {
-    const data = {
-      version: 1,
-      exportedAt: new Date().toISOString(),
-      favorites,
-      subscriptions,
-    };
-    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const clearHistory = useHistoryStore((s) => s.clear);
+  const slugs = useFavoritesStore((s) => s.slugs);
+
+  const [confirmClearHistory, setConfirmClearHistory] = useState(false);
+  const [confirmClearCache, setConfirmClearCache] = useState(false);
+
+  const handleClearHistory = () => {
+    if (!confirmClearHistory) {
+      setConfirmClearHistory(true);
+      return;
+    }
+    clearHistory();
+    setConfirmClearHistory(false);
+  };
+
+  const handleClearCache = () => {
+    if (!confirmClearCache) {
+      setConfirmClearCache(true);
+      return;
+    }
+    localStorage.clear();
+    window.location.reload();
+  };
+
+  const handleExport = () => {
+    const data = JSON.stringify(slugs, null, 2);
+    const blob = new Blob([data], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `brandprice-${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `brandprice-favorites-${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
@@ -47,150 +53,150 @@ export default function SettingsPage() {
     <>
       <TopBar title={t('settings.title')} />
       <Page>
-        <div className="pt-6">
-          <p className="font-serif italic text-2xs tracking-caps uppercase text-ink-400">
-            § {t('settings.controls')}
-          </p>
-          <h1 className="mt-2 font-serif text-5xl sm:text-6xl font-bold tracking-tighter leading-[0.9]">
-            {t('settings.heading')}<span className="text-vermilion">.</span>
-          </h1>
-        </div>
-
-        <div className="mt-10">
+        {/* Language Section */}
+        <section className="mt-6 mb-10">
           <SectionHeader
-            index="00"
+            index="01"
             title={t('settings.section.language')}
             meta={t('settings.section.languageMeta')}
           />
-          <LanguageSwitcher />
-        </div>
+          <div className="grid grid-cols-2 gap-2">
+            {(['zh', 'en'] as const).map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                className={`py-3 border-2 font-mono text-2xs uppercase tracking-caps transition-colors ${
+                  lang === l
+                    ? 'border-ink bg-ink text-paper'
+                    : 'border-ink hover:bg-ink hover:text-paper text-ink'
+                }`}
+              >
+                {l === 'zh' ? '中文' : 'English'}
+              </button>
+            ))}
+          </div>
+        </section>
 
-        <div className="mt-10">
+        {/* Theme Section */}
+        <section className="mb-10">
           <SectionHeader
-            index="01"
-            title={t('currency.title')}
-            meta={t('currency.subtitle')}
+            index="02"
+            title={t('settings.section.theme')}
+            meta={t('theme.appliesImmediately')}
           />
-          <ul className="border-2 border-ink divide-y-2 divide-ink">
-            {CURRENCIES.map((c) => {
-              const active = c === currency;
-              return (
-                <li key={c}>
-                  <button
-                    onClick={() => setCurrency(c)}
-                    className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left active:bg-ink active:text-paper"
-                  >
-                    <div>
-                      <div className="font-serif text-lg">{c}</div>
-                      <div className="text-2xs font-mono uppercase tracking-caps text-ink-500">
-                        {CURRENCY_LABEL[c as Currency]}
-                      </div>
-                    </div>
-                    {active ? (
-                      <Check size={16} strokeWidth={1.5} className="text-vermilion" />
-                    ) : (
-                      <ChevronRight size={16} strokeWidth={1.5} className="text-ink-400" />
-                    )}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <div className="mt-10">
-          <SectionHeader index="02" title={t('settings.section.theme')} meta={t('theme.appliesImmediately')} />
-          <div className="grid grid-cols-3 gap-0 border-2 border-ink">
-            {THEMES.map((th) => {
-              const active = th.value === theme;
-              const Icon = th.icon;
-              return (
-                <button
-                  key={th.value}
-                  onClick={() => setTheme(th.value)}
-                  className={`flex flex-col items-center gap-2 py-4 ${
-                    active
-                      ? 'bg-ink text-paper dark:bg-paper dark:text-ink'
-                      : 'text-ink-500'
-                  } border-r-2 border-ink last:border-r-0`}
-                >
-                  <Icon size={20} strokeWidth={1.5} />
-                  <span className="font-mono text-2xs uppercase tracking-caps">{t(th.key)}</span>
-                </button>
-              );
-            })}
+          <div className="grid grid-cols-3 gap-2">
+            {(['system', 'light', 'dark'] as const).map((th) => (
+              <button
+                key={th}
+                onClick={() => setTheme(th)}
+                className={`py-3 border-2 font-mono text-2xs uppercase tracking-caps transition-colors ${
+                  theme === th
+                    ? 'border-ink bg-ink text-paper'
+                    : 'border-ink hover:bg-ink hover:text-paper text-ink'
+                }`}
+              >
+                {t(`theme.${th}`)}
+              </button>
+            ))}
           </div>
-        </div>
+        </section>
 
-        <div className="mt-10">
-          <SectionHeader index="03" title={t('settings.section.data')} meta="local only" />
-          <ul className="border-2 border-ink divide-y-2 divide-ink">
-            <li>
+        {/* Data Section */}
+        <section className="mb-10">
+          <SectionHeader
+            index="03"
+            title={t('settings.section.data')}
+            meta={t('settings.controls')}
+          />
+          <div className="border-t-2 border-ink divide-y divide-ink">
+            {/* Clear History */}
+            <div className="flex items-center justify-between gap-4 py-4">
+              <div>
+                <h3 className="font-serif font-bold text-base">
+                  {t('settings.data.clearHistory.title')}
+                </h3>
+                <p className="text-2xs font-mono uppercase tracking-caps text-ink-500">
+                  {t('settings.data.clearHistory.meta')}
+                </p>
+              </div>
               <button
-                onClick={() => {
-                  if (confirm(t('common.confirmClearHistory'))) clearHistory();
-                }}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left active:bg-ink active:text-paper"
+                onClick={handleClearHistory}
+                className={`px-3 py-1.5 border-2 text-2xs font-mono uppercase tracking-caps transition-colors ${
+                  confirmClearHistory
+                    ? 'border-vermilion bg-vermilion text-white'
+                    : 'border-ink hover:bg-ink hover:text-paper'
+                }`}
               >
-                <div>
-                  <div className="font-serif text-lg">{t('settings.data.clearHistory.title')}</div>
-                  <div className="text-2xs font-mono uppercase tracking-caps text-ink-500">
-                    {t('settings.data.clearHistory.meta')}
-                  </div>
-                </div>
-                <Trash2 size={16} strokeWidth={1.5} />
+                {confirmClearHistory ? t('common.remove') : t('history.clearAll')}
               </button>
-            </li>
-            <li>
-              <button
-                onClick={exportData}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left active:bg-ink active:text-paper"
-              >
-                <div>
-                  <div className="font-serif text-lg">{t('settings.data.export.title')}</div>
-                  <div className="text-2xs font-mono uppercase tracking-caps text-ink-500">
-                    {t('settings.data.export.meta')}
-                  </div>
-                </div>
-                <Download size={16} strokeWidth={1.5} />
-              </button>
-            </li>
-            <li>
-              <button
-                onClick={() => {
-                  if (confirm(t('common.confirmClearCache'))) {
-                    if ('caches' in window) {
-                      caches.keys().then((keys) => keys.forEach((k) => caches.delete(k)));
-                    }
-                    location.reload();
-                  }
-                }}
-                className="w-full flex items-center justify-between gap-3 px-4 py-3 text-left active:bg-ink active:text-paper"
-              >
-                <div>
-                  <div className="font-serif text-lg">{t('settings.data.clearCache.title')}</div>
-                  <div className="text-2xs font-mono uppercase tracking-caps text-ink-500">
-                    {t('settings.data.clearCache.meta')}
-                  </div>
-                </div>
-                <Trash2 size={16} strokeWidth={1.5} />
-              </button>
-            </li>
-          </ul>
-        </div>
+            </div>
 
-        <div className="mt-10">
-          <SectionHeader index="04" title={t('settings.section.about')} meta={t('settings.colophon')} />
+            {/* Export Favorites */}
+            <div className="flex items-center justify-between gap-4 py-4">
+              <div>
+                <h3 className="font-serif font-bold text-base">
+                  {t('settings.data.export.title')}
+                </h3>
+                <p className="text-2xs font-mono uppercase tracking-caps text-ink-500">
+                  {t('settings.data.export.meta')}
+                </p>
+              </div>
+              <button
+                onClick={handleExport}
+                className="px-3 py-1.5 border-2 border-ink text-2xs font-mono uppercase tracking-caps hover:bg-ink hover:text-paper transition-colors"
+              >
+                {t('favorites.archive')}
+              </button>
+            </div>
+
+            {/* Clear Cache */}
+            <div className="flex items-center justify-between gap-4 py-4">
+              <div>
+                <h3 className="font-serif font-bold text-base">
+                  {t('settings.data.clearCache.title')}
+                </h3>
+                <p className="text-2xs font-mono uppercase tracking-caps text-ink-500">
+                  {t('settings.data.clearCache.meta')}
+                </p>
+              </div>
+              <button
+                onClick={handleClearCache}
+                className={`px-3 py-1.5 border-2 text-2xs font-mono uppercase tracking-caps transition-colors ${
+                  confirmClearCache
+                    ? 'border-vermilion bg-vermilion text-white'
+                    : 'border-ink hover:bg-ink hover:text-paper'
+                }`}
+              >
+                {confirmClearCache ? t('common.remove') : t('history.clearAll')}
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* About Section */}
+        <section className="mb-10">
+          <SectionHeader
+            index="04"
+            title={t('settings.section.about')}
+            meta={t('settings.colophon')}
+          />
           <div className="font-serif text-sm leading-relaxed text-ink-700 dark:text-ink-300">
-            <p>
-              <span className="font-semibold">BrandPrice</span> · {t('settings.about.body')}
-            </p>
-            <p className="mt-3 text-ink-500">{t('settings.about.tagline')}</p>
-            <p className="mt-6 text-2xs font-mono uppercase tracking-caps text-ink-400">
-              {t('settings.about.version', { year: new Date().getFullYear() })}
-            </p>
+            <p className="italic">"{t('settings.about.tagline')}"</p>
+            <p className="mt-3">{t('settings.about.body')}</p>
+            <div className="mt-6 flex items-center justify-between font-mono text-2xs uppercase tracking-caps text-ink-500">
+              <span>{t('settings.about.version', { year: new Date().getFullYear() })}</span>
+              <a
+                href="https://github.com/Benjamin-JHou/brandprice"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 hover:text-vermilion transition-colors"
+              >
+                <span>GitHub</span>
+                <ArrowUpRight size={10} />
+              </a>
+            </div>
           </div>
-        </div>
+        </section>
       </Page>
       <BottomNav />
     </>

@@ -4,7 +4,6 @@ import { useApplyTheme } from './hooks/useApplyTheme';
 import { useSettingsStore } from './store/useSettingsStore';
 import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
-import ProductDetailPage from './pages/ProductDetailPage';
 import BrandPage from './pages/BrandPage';
 import FavoritesPage from './pages/FavoritesPage';
 import HistoryPage from './pages/HistoryPage';
@@ -18,7 +17,7 @@ export default function App() {
   // 同步 <html lang> 与 document.title
   useEffect(() => {
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
-    const title = lang === 'zh' ? 'BrandPrice · 海外小众品牌查价' : 'BrandPrice · Niche Brand Price Lookup';
+    const title = lang === 'zh' ? 'BrandPrice · 韩国小众品牌官网导航' : 'BrandPrice · Korean Niche Brands Portal';
     document.title = title;
   }, [lang]);
 
@@ -28,7 +27,6 @@ export default function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/brand/:slug" element={<BrandPage />} />
-        <Route path="/product/:sku" element={<ProductDetailPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/history" element={<HistoryPage />} />
         <Route path="/settings" element={<SettingsPage />} />

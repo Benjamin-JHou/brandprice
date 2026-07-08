@@ -1,9 +1,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { api } from '../lib/api';
-import type { Product } from '../lib/types';
+import type { Brand } from '../lib/types';
 
 type State = {
-  data: Product[];
+  data: Brand[];
   loading: boolean;
   error: string | null;
   elapsedMs: number;
@@ -26,7 +26,7 @@ export function useSearch(query: string, debounceMs = 300) {
     let cancelled = false;
     setState((s) => ({ ...s, loading: true, error: null }));
     api
-      .search(debounced, 10)
+      .search(debounced, 20)
       .then((res) => {
         if (cancelled) return;
         setState({ data: res.items, loading: false, error: null, elapsedMs: res.elapsedMs });
@@ -43,7 +43,7 @@ export function useSearch(query: string, debounceMs = 300) {
   const refresh = useCallback(() => {
     if (!debounced.trim()) return;
     setState((s) => ({ ...s, loading: true }));
-    api.search(debounced, 10).then((res) =>
+    api.search(debounced, 20).then((res) =>
       setState({ data: res.items, loading: false, error: null, elapsedMs: res.elapsedMs }),
     );
   }, [debounced]);
