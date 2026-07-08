@@ -32,7 +32,7 @@ jobs:
           version: 11
 
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --no-frozen-lockfile > pnpm-log.txt 2>&1 || (cat pnpm-log.txt && false)
 
       - name: Build
         run: pnpm run build
