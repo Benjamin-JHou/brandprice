@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage';
 import SearchPage from './pages/SearchPage';
 import BrandPage from './pages/BrandPage';
 import FavoritesPage from './pages/FavoritesPage';
-import HistoryPage from './pages/HistoryPage';
+import SchedulePage from './pages/SchedulePage';
 import SettingsPage from './pages/SettingsPage';
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -28,7 +28,7 @@ export default function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/brand/:slug" element={<BrandPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
-        <Route path="/history" element={<HistoryPage />} />
+        <Route path="/schedule" element={<SchedulePage />} />
         <Route path="/settings" element={<SettingsPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

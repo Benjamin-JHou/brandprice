@@ -1,11 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Search, Bookmark, Clock, Settings as Cog } from 'lucide-react';
+import { Search, Bookmark, Calendar, Settings as Cog } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useI18n } from '../i18n/useI18n';
 
 const items = [
   { to: '/', key: 'nav.search' as const, icon: Search },
-  { to: '/history', key: 'nav.history' as const, icon: Clock },
+  { to: '/schedule', key: 'nav.schedule' as const, icon: Calendar },
   { to: '/favorites', key: 'nav.saved' as const, icon: Bookmark },
   { to: '/settings', key: 'nav.settings' as const, icon: Cog },
 ];

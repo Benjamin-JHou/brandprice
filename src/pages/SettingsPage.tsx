@@ -127,7 +127,7 @@ export default function SettingsPage() {
                     : 'border-ink text-ink hover:bg-ink hover:text-paper dark:border-paper dark:text-paper dark:hover:bg-paper dark:hover:text-ink'
                 }`}
               >
-                {confirmClearHistory ? t('common.remove') : t('history.clearAll')}
+                {confirmClearHistory ? t('common.remove') : t('common.clear')}
               </button>
             </div>
 
@@ -167,7 +167,7 @@ export default function SettingsPage() {
                     : 'border-ink text-ink hover:bg-ink hover:text-paper dark:border-paper dark:text-paper dark:hover:bg-paper dark:hover:text-ink'
                 }`}
               >
-                {confirmClearCache ? t('common.remove') : t('history.clearAll')}
+                {confirmClearCache ? t('common.remove') : t('common.clear')}
               </button>
             </div>
           </div>
